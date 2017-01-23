@@ -20,6 +20,10 @@ public class GameTest extends JComponent{
 			Image iS2 = toolkit.getImage(GameTest.class.getResource(suspects2));
 			iS2 = iS2.getScaledInstance(300, 170, Image.SCALE_SMOOTH);
 			
+			String weapons = "/resources/weapons.jpg";
+			Image iW = toolkit.getImage(GameTest.class.getResource(weapons));
+			iW = iW.getScaledInstance(250, 340, Image.SCALE_SMOOTH);
+			
 			String pawn = "resources/pawn.png";
 			Image iP = toolkit.getImage(GameTest.class.getResource(pawn));
 			iP = iP.getScaledInstance(40, 50, Image.SCALE_SMOOTH);
@@ -29,7 +33,7 @@ public class GameTest extends JComponent{
 			iA = iA.getScaledInstance(120, 100, Image.SCALE_SMOOTH);
 			
 			JFrame frame = new JFrame("Clue");
-			frame.getContentPane().add(new Game(iB, iS1, iS2, iP, iA));
+			frame.getContentPane().add(new Game(iB, iS1, iS2, iW, iP, iA));
 			frame.setSize(1000, 800);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setVisible(true);}

@@ -8,7 +8,7 @@ import java.util.*;
 import javax.swing.*;
 
 public class Game extends JComponent implements MouseListener{
-	Image iBoard, iSuspects1, iSuspects2, iPawn, iArrows;
+	Image iBoard, iSuspects1, iSuspects2, iWeapons, iPawn, iArrows;
 	int correctS, correctW, correctR, clickX, clickY, mouseX, mouseY;
 	int pawnX=445, pawnY=0, pMovesX=0, pMovesY=-1, guessN=0;
 	private JTextArea text, text2;
@@ -22,7 +22,7 @@ public class Game extends JComponent implements MouseListener{
 	Weapon[] weapons = {new Weapon("Rope"), new Weapon("Revolver"), new Weapon("Wrench"), new Weapon("Knife"), new Weapon("Candlestick"), new Weapon("Lead Pipe")};
 	Room[] rooms = {new Room("Study"), new Room("Hall"), new Room("Lounge"), new Room("Library"), new Room("Dining Room"), new Room("Billard Room"), new Room("Conservatory"), new Room("Ball Room"), new Room("Kitchen")};
 	
-	public Game(Image iB, Image iS1, Image iS2, Image iP, Image iA){
+	public Game(Image iB, Image iS1, Image iS2, Image iW, Image iP, Image iA){
 		guess1=false;
 		guess2=false;
 		text = new JTextArea();
@@ -41,6 +41,7 @@ public class Game extends JComponent implements MouseListener{
 		iBoard = iB;
 		iSuspects1 = iS1;
 		iSuspects2 = iS2;
+		iWeapons = iW;
 		iPawn = iP;
 		iArrows = iA;
 		addMouseListener(this);
@@ -55,32 +56,37 @@ public class Game extends JComponent implements MouseListener{
 	public void promptGuess(Room r){
 		rGuess = r;
 		text.setText(String.format("Make a guess in the %s.", r.getName()));
-		guess1=true;}
+		if(guess2==false)
+			guess1=true;}
 	
 	public void guessSuspect(Suspect s){
 		guessN+=1;
 		text2.setText(String.format("Guess #%d\nRoom: %s\nSuspect: %s", guessN, rGuess.getName(), sGuess.getName()));
 		guess2=true;
-		guess1=false;
-	}
+		guess1=false;}
+	
+	public void guessWeapon(Weapon w){
+		text2.setText(String.format("Guess #%d\nRoom: %s\nSuspect: %s\nWeapon: %s", guessN, rGuess.getName(), sGuess.getName(), wGuess.getName()));
+		guess2=false;}
 	
 	public void paint(Graphics g){
 		Graphics2D g2 = (Graphics2D)g;
 		g2.drawImage(iBoard, 0, 10, this);
 		g2.drawImage(iSuspects1, 5, 560, this);
 		g2.drawImage(iSuspects2, 405, 560, this);
+		g2.drawImage(iWeapons, 705, 390, this);
 		g2.drawImage(iPawn, pawnX, pawnY, this);
 		g2.drawImage(iArrows, 710, 410, this);
 		if(text!=null)
 			text.repaint();
-		if(text2!=null)
-			text2.repaint();}
+		if(text!=null){
+			text2.repaint();}}
 	
 	public void mouseClicked(MouseEvent e){
 		clickX = e.getX();
 		clickY = e.getY();
 		
-		if(guess1==false){
+		if(guess1==false && guess2==false){
 			//left, right, and down arrows
 			if(clickY>=460 && clickY<=505 && clickX<=830){
 				//right arrow
@@ -109,11 +115,25 @@ public class Game extends JComponent implements MouseListener{
 		else if(pMovesX>=1 && pMovesY<=4){
 			promptGuess(rooms[2]);}
 		
+		//suspect guess
 		if(guess1==true){
 			//scarlet
 			if(clickX<100 && clickY>560){
 				sGuess = suspects[0];}
+			//mustard
+			else if(clickX<200 && clickY>560){
+				sGuess = suspects[1];}
+			//white
+			
 			guessSuspect(sGuess);}
+		
+		//weapon guess
+		else if(guess2==true){
+			
+		}
+		
+		else
+			text2.setText(null);
 		repaint();}
 	
 	public void leftArrow(){
