@@ -2,9 +2,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
 
-
+/**
+ * This class models GameTest objects which extend JComponent
+ * @author ShaynaSnyder
+ *
+ */
 public class GameTest extends JComponent{
-	
+	/**
+	 * main function reads in image resources and creates a Game object in JFrame
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
@@ -57,10 +64,35 @@ public class GameTest extends JComponent{
 			Image d6 = toolkit.getImage(GameTest.class.getResource(dice6));
 			d6 = d6.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
 			
+			String title = "resources/title.png";
+			Image t = toolkit.getImage(GameTest.class.getResource(title));
+			t = t.getScaledInstance(700,400,Image.SCALE_SMOOTH);
+			
+			String background = "resources/curtains.jpg";
+			Image b = toolkit.getImage(GameTest.class.getResource(background));
+			b = b.getScaledInstance(1400,800,Image.SCALE_SMOOTH);
+			
 			JFrame frame = new JFrame("Clue");
-			frame.getContentPane().add(new Game(iB, iS1, iS2, iW, iP, iA, d1, d2, d3, d4, d5, d6));
-			frame.setSize(1000, 800);
+			JButton start = new JButton("Start Game");
+			start.setFont(new Font("SansSerif",Font.BOLD,40));
+			start.setBounds(500, 400, 400, 100);
+			frame.add(start);
+			
+			JButton rules = new JButton("Instructions");
+			rules.setFont(new Font("SansSerif",Font.BOLD,40));
+			rules.setBounds(500, 550,400,100);
+			frame.add(rules);
+			
+			/*JFrame menu = new JFrame("Menu");
+			start.addActionListener(this);
+			menu.add(start);
+			menu.setSize(1400,800);
+			menu.setVisible(true);*/
+			
+			Game game = new Game(iB, iS1, iS2, iW, iP, iA, d1, d2, d3, d4, d5, d6, t, b, start, rules);
+			//frame.setContentPane(game.new ImagePanel(b));
+			frame.getContentPane().add(game);
+			frame.setSize(1400, 800);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setVisible(true);}
-		catch(Exception ex){;}}
-}
+		catch(Exception ex){;}}}
